@@ -32,7 +32,7 @@ rl-config/
 
 1. Clone the repository:
 ```bash
-git clone https://github.com/yourusername/rl-config.git
+git clone https://github.com/F1-bot/rl-config.git
 cd rl-config
 ```
 
