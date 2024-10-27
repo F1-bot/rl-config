@@ -1,36 +1,124 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Reinforcement Learning Training Interface
 
-## Getting Started
+Interactive web interface for training and configuring Reinforcement Learning agents.
 
-First, run the development server:
-
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+## Project Structure
+```
+rl-config/
+├── backend/             # Python FastAPI backend
+│   ├── init.py
+│   ├── agent.py        # RL agent implementation
+│   ├── environment.py  # Training environment
+│   ├── main.py        # FastAPI server
+│   ├── model.py       # Neural network models
+│   └── utils.py       # Utility functions
+├── frontend/           # Next.js frontend
+│   ├── src/
+│   │   ├── components/ # React components
+│   │   ├── hooks/     # Custom React hooks
+│   │   ├── styles/    # CSS styles
+│   │   └── types/     # TypeScript types
+│   └── public/        # Static files
+└── requirements.txt    # Python dependencies
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Requirements
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+- Python 3.8+
+- Node.js 16+
+- npm 8+
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Installation
 
-## Learn More
+1. Clone the repository:
+```bash
+git clone https://github.com/yourusername/rl-config.git
+cd rl-config
+```
 
-To learn more about Next.js, take a look at the following resources:
+2. Set up the Python backend:
+# Create and activate virtual environment
+```
+python -m venv venv
+```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+# On Windows:
+```
+venv\Scripts\activate
+```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+# On Unix or MacOS:
+```
+source venv/bin/activate
+```
 
-## Deploy on Vercel
+# Install dependencies
+```
+pip install -r requirements.txt
+```
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+# Start the backend server
+```
+cd backend
+python main.py
+```
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+3. Set up the frontend:
+# Install dependencies
+```
+cd frontend
+npm install
+```
+
+# Start the development server
+```
+npm run dev
+```
+
+4. Open the web interface in your browser:
+```
+http://localhost:3000
+```
+
+# Usage
+
+### Configure environment settings:
+
+1. Grid Size (4-12)
+2. Number of Coins (1-5)
+3. Number of Obstacles (0-8)
+4. Dynamic Obstacles option
+
+
+### Adjust agent parameters:
+
+1. Learning Rate 
+2. Batch Size 
+3. Gamma (Discount)
+4. Epsilon Decay
+
+
+### Set training parameters:
+
+1. Number of Episodes 
+2. Render Frequency
+
+
+### Click "Start Training" to begin the training process
+
+
+# Development
+### To run the project in development mode:
+
+### Start the backend server:
+```bash
+cd backend
+python main.py
+```
+
+### In a separate terminal, start the frontend development server:
+
+```bash
+cd frontend
+npm run dev
+```

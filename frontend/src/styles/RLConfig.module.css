@@ -1,0 +1,227 @@
+.container {
+    padding: 2rem;
+    max-width: 1400px;
+    margin: 0 auto;
+    background-color: #ffffff;
+    min-height: 100vh;
+}
+
+.title {
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: #1a1a1a;
+    margin-bottom: 2rem;
+    text-align: center;
+}
+
+.statusBar {
+    background-color: #f8fafc;
+    border: 1px solid #e2e8f0;
+    border-radius: 0.5rem;
+    padding: 1rem;
+    margin-bottom: 2rem;
+    margin-top: 1rem; /* Додаємо відступ зверху */
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+}
+
+.statusIndicator {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.statusDot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+}
+
+.statusDot.connected {
+    background-color: #22c55e;
+}
+
+.statusDot.disconnected {
+    background-color: #ef4444;
+}
+
+.statusDot.error {
+    background-color: #f59e0b;
+}
+
+.grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem;
+    margin-bottom: 2rem;
+}
+
+.section {
+    background: white;
+    border: 1px solid #e2e8f0;
+    border-radius: 0.5rem;
+    padding: 1.5rem;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+}
+
+.sectionTitle {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: #1a1a1a;
+    margin-bottom: 1.5rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 2px solid #e2e8f0;
+}
+
+.controlGroup {
+    margin-bottom: 1.5rem;
+}
+
+.label {
+    display: block;
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: #4a5568;
+    margin-bottom: 0.5rem;
+}
+
+.value {
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: #2d3748;
+}
+
+.button {
+    background-color: #3b82f6;
+    color: white;
+    padding: 0.75rem 2rem;
+    border-radius: 0.375rem;
+    font-weight: 600;
+    transition: all 0.2s;
+    margin: 2rem 0;  /* Збільшуємо відступ зверху і знизу */
+}
+
+.button:hover {
+    background-color: #2563eb;
+}
+
+.button:disabled {
+    background-color: #94a3b8;
+    cursor: not-allowed;
+}
+
+.button.stop {
+    background-color: #ef4444;
+}
+
+.button.stop:hover {
+    background-color: #dc2626;
+}
+
+.chartContainer {
+    background: white;
+    border-radius: 0.5rem;
+    padding: 1rem;
+    width: 100%;
+    overflow: hidden;
+    min-height: 400px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.grid2Cols {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 2rem;
+    margin: 2rem 0;  /* Додаємо відступи зверху і знизу */
+    align-items: start;
+}
+
+.environmentView {
+    background: white;
+    border-radius: 0.5rem;
+    padding: 1.5rem;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    overflow: auto;
+    max-height: 80vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.grid2x2 {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
+}
+
+.envCell {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: white;
+    border: 1px solid #e2e8f0;
+    transition: all 0.2s ease;
+}
+
+.envAgent {
+    background-color: #3b82f6;
+    color: white;
+}
+
+.envCoin {
+    background-color: #fbbf24;
+    color: white;
+}
+
+.envObstacle {
+    background-color: #ef4444;
+    color: white;
+}
+
+.errorMessage {
+    background-color: #fee2e2;
+    border: 1px solid #ef4444;
+    color: #dc2626;
+    padding: 1rem;
+    border-radius: 0.5rem;
+    margin-bottom: 1rem;
+}
+
+.sliderContainer {
+    margin: 1.5rem 0;
+    padding: 0 0.75rem;
+}
+
+.sliderLabel {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 0.75rem;
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: #1F2937;
+}
+
+.switchContainer {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.75rem;
+    margin: 0.5rem 0;
+    background-color: #F9FAFB;
+    border-radius: 0.5rem;
+}
+
+.switchLabel {
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: #1F2937;
+}
+
+.section + .section {
+    margin-top: 2rem;
+}
