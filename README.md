@@ -24,6 +24,7 @@ rl-config/
 
 ## Requirements
 
+- Git 2.47.0+
 - Python 3.8+
 - Node.js 16+
 - npm 8+
