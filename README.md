@@ -1,3 +1,5 @@
+![alt text](https://i.ibb.co/T0rZDWL/Screenshot-240.png)
+
 # Reinforcement Learning Training Interface
 
 Interactive web interface for training and configuring Reinforcement Learning agents.
