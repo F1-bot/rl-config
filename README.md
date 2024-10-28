@@ -9,7 +9,7 @@ rl-config/
 │   ├── init.py
 │   ├── agent.py        # RL agent implementation
 │   ├── environment.py  # Training environment
-│   ├── main.py        # FastAPI server
+│   ├── server.py        # FastAPI server
 │   ├── model.py       # Neural network models
 │   └── utils.py       # Utility functions
 ├── frontend/           # Next.js frontend
