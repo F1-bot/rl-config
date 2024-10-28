@@ -9,7 +9,7 @@ rl-config/
 │   ├── init.py
 │   ├── agent.py        # RL agent implementation
 │   ├── environment.py  # Training environment
-│   ├── main.py        # FastAPI server
+│   ├── server.py        # FastAPI server
 │   ├── model.py       # Neural network models
 │   └── utils.py       # Utility functions
 ├── frontend/           # Next.js frontend
@@ -24,6 +24,7 @@ rl-config/
 
 ## Requirements
 
+- Git 2.47.0+
 - Python 3.8+
 - Node.js 16+
 - npm 8+
@@ -32,7 +33,7 @@ rl-config/
 
 1. Clone the repository:
 ```bash
-git clone https://github.com/yourusername/rl-config.git
+git clone https://github.com/F1-bot/rl-config.git
 cd rl-config
 ```
 
@@ -60,7 +61,7 @@ pip install -r requirements.txt
 # Start the backend server
 ```
 cd backend
-python main.py
+python server.py
 ```
 
 3. Set up the frontend:
