@@ -60,7 +60,7 @@ pip install -r requirements.txt
 # Start the backend server
 ```
 cd backend
-python main.py
+python server.py
 ```
 
 3. Set up the frontend:
