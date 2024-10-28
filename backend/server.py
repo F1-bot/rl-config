@@ -4,10 +4,59 @@ import numpy as np
 import json
 import logging
 import asyncio
+import time
 from environment import SimplifiedGameEnv
 from agent import SimplifiedAgent
 
-# Налаштування логування
+class TrainingStats:
+    def __init__(self):
+        self.start_time = None
+        self.total_steps = 0
+        self.best_reward = float('-inf')
+        self.total_reward = 0
+        self.episode_count = 0
+
+    def start(self):
+        self.start_time = time.time()
+
+    def update(self, reward, steps):
+        self.total_steps += steps
+        self.total_reward += reward
+        self.episode_count += 1
+        self.best_reward = max(self.best_reward, reward)
+
+    @property
+    def average_reward(self):
+        return self.total_reward / max(1, self.episode_count)
+
+    @property
+    def training_time(self):
+        if self.start_time is None:
+            return 0
+        return int(time.time() - self.start_time)
+
+    @property
+    def steps_per_second(self):
+        training_time = self.training_time
+        if training_time == 0:
+            return 0.0
+        return self.total_steps / training_time
+
+    def get_stats(self):
+        return {
+            "averageReward": round(self.average_reward, 3),
+            "trainingTime": self.format_time(self.training_time),
+            "bestReward": round(self.best_reward, 3),
+            "stepsPerSecond": round(self.steps_per_second, 1)
+        }
+
+    @staticmethod
+    def format_time(seconds):
+        hours = seconds // 3600
+        minutes = (seconds % 3600) // 60
+        seconds = seconds % 60
+        return f"{hours:02d}:{minutes:02d}:{seconds:02d}"
+
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
@@ -24,27 +73,6 @@ app.add_middleware(
 @app.get("/health")
 async def health_check():
     return {"status": "healthy"}
-
-async def run_training_episode(env, agent, websocket):
-    state = env.reset()
-    total_reward = 0
-    episode_losses = []
-    done = False
-
-    while not done:
-        action = agent.get_action(state)
-        next_state, reward, done, _, info = env.step(action)
-
-        agent.remember(state, action, reward, next_state, done)
-        loss = agent.train()
-
-        if loss is not None:
-            episode_losses.append(float(loss))
-
-        state = next_state
-        total_reward += reward
-
-    return total_reward, np.mean(episode_losses) if episode_losses else 0.0
 
 @app.websocket("/ws/train")
 async def websocket_endpoint(websocket: WebSocket):
@@ -74,6 +102,9 @@ async def websocket_endpoint(websocket: WebSocket):
 
         render_every = config['trainingConfig'].get('renderEvery', 50)
         logger.info(f"Render frequency: every {render_every} episodes")
+
+        stats = TrainingStats()
+        stats.start()
 
         # Цикл тренування
         for episode in range(config['trainingConfig']['episodes']):
@@ -113,7 +144,8 @@ async def websocket_endpoint(websocket: WebSocket):
                     # Затримка тільки при візуалізації
                     await asyncio.sleep(0.05)
 
-            # Оновлюємо epsilon і відправляємо прогрес
+            # Оновлюємо статистику і epsilon
+            stats.update(total_reward, steps_in_episode)
             agent.update_epsilon()
             avg_loss = np.mean(episode_losses) if episode_losses else 0.0
 
@@ -124,7 +156,8 @@ async def websocket_endpoint(websocket: WebSocket):
                     "score": float(total_reward),
                     "loss": float(avg_loss),
                     "epsilon": float(agent.epsilon),
-                    "steps": steps_in_episode
+                    "steps": steps_in_episode,
+                    "stats": stats.get_stats()
                 }
             })
 

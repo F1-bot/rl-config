@@ -1,4 +1,5 @@
 import React from 'react';
+import styles from '@/styles/RLConfig.module.css';
 
 interface CustomSliderProps {
     value: number;
@@ -20,10 +21,10 @@ export const CustomSlider: React.FC<CustomSliderProps> = ({
     const percentage = ((value - min) / (max - min)) * 100;
 
     return (
-        <div className="relative w-full h-6 flex items-center">
-            <div className="absolute w-full h-2 bg-gray-200 rounded-full">
+        <div className={styles.sliderContainer}>
+            <div className={styles.sliderTrack}>
                 <div
-                    className="absolute h-full bg-blue-500 rounded-full"
+                    className={styles.sliderFill}
                     style={{ width: `${percentage}%` }}
                 />
             </div>
@@ -35,11 +36,11 @@ export const CustomSlider: React.FC<CustomSliderProps> = ({
                 max={max}
                 step={step}
                 disabled={disabled}
-                className="absolute w-full h-2 opacity-0 cursor-pointer"
+                className={styles.sliderInput}
             />
             <div
-                className="absolute w-4 h-4 bg-white border-6 border-blue-500 rounded-full shadow-md"
-                style={{ left: `calc(${percentage}% - 0.5rem)` }}
+                className={styles.sliderThumb}
+                style={{ left: `calc(${percentage}% - 12px)` }}
             />
         </div>
     );

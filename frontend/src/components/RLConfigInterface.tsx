@@ -1,11 +1,11 @@
 "use client"
 import React, { useState, useEffect } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
+// import { Button } from "@/components/ui/button";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend } from 'recharts';
 import { CustomSlider } from './CustomSlider';
-import { CustomSwitch } from './CustomSwitch';
+// import { CustomSwitch } from './CustomSwitch';
 import EnvironmentView from './EnvironmentView';
 import styles from '@/styles/RLConfig.module.css';
 
@@ -155,7 +155,7 @@ const RLConfigInterface = () => {
 
             <div className={styles.statusBar}>
                 <div className={styles.statusIndicator}>
-                    <div className={`${styles.statusDot} ${styles[status.toLowerCase()]}`} />
+                    <div className={`${styles.statusDot} ${styles[status.toLowerCase()]}`}/>
                     <span>Status: {status}</span>
                 </div>
                 {isTraining && (
@@ -169,183 +169,197 @@ const RLConfigInterface = () => {
                 </div>
             )}
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+            <div className={styles.cardContainer}>
                 {/* Environment Settings */}
-                <Card>
-                    <CardHeader>
-                        <CardTitle>Environment Settings</CardTitle>
-                    </CardHeader>
-                    <CardContent>
-                        <div className="space-y-4">
-                            <div className={styles.sliderContainer}>
-                                <div className={styles.sliderLabel}>
-                                    <span>Grid Size</span>
-                                    <span className="font-medium">{envConfig.size}</span>
+                <div className="grid gap-6">
+                    <Card>
+                        <CardHeader>
+                            <CardTitle>Environment Settings</CardTitle>
+                        </CardHeader>
+                        <CardContent>
+                            <div className={styles.settingsGrid}>
+                                <div className={styles.settingItem}>
+                                    <div className={styles.settingLabel}>
+                                        <span className={styles.settingName}>Grid Size</span>
+                                        <span className={styles.settingValue}>{envConfig.size}</span>
+                                    </div>
+                                    <CustomSlider
+                                        value={envConfig.size}
+                                        onChange={(value) => setEnvConfig({...envConfig, size: value})}
+                                        min={4}
+                                        max={12}
+                                        step={1}
+                                        disabled={isTraining}
+                                    />
                                 </div>
-                                <CustomSlider
-                                    value={envConfig.size}
-                                    onChange={(value) => {
-                                        setEnvConfig({...envConfig, size: value});
-                                        setGridState([]);
-                                    }}
-                                    min={4}
-                                    max={12}
-                                    step={1}
-                                    disabled={isTraining}
-                                />
-                            </div>
 
-                            <div className={styles.sliderContainer}>
-                                <div className={styles.sliderLabel}>
-                                    <span>Number of Coins</span>
-                                    <span>{envConfig.nCoins}</span>
+                                <div className={styles.settingItem}>
+                                    <div className={styles.settingLabel}>
+                                        <span className={styles.settingName}>Number of Coins</span>
+                                        <span className={styles.settingValue}>{envConfig.nCoins}</span>
+                                    </div>
+                                    <CustomSlider
+                                        value={envConfig.nCoins}
+                                        onChange={(value) => setEnvConfig({...envConfig, nCoins: value})}
+                                        min={1}
+                                        max={5}
+                                        step={1}
+                                        disabled={isTraining}
+                                    />
                                 </div>
-                                <CustomSlider
-                                    value={envConfig.nCoins}
-                                    onChange={(value) => setEnvConfig({...envConfig, nCoins: value})}
-                                    min={1}
-                                    max={5}
-                                    step={1}
-                                    disabled={isTraining}
-                                />
-                            </div>
 
-                            <div className={styles.sliderContainer}>
-                                <div className={styles.sliderLabel}>
-                                    <span>Number of Obstacles</span>
-                                    <span>{envConfig.nObstacles}</span>
+                                <div className={styles.settingItem}>
+                                    <div className={styles.settingLabel}>
+                                        <span className={styles.settingName}>Number of Obstacles</span>
+                                        <span className={styles.settingValue}>{envConfig.nObstacles}</span>
+                                    </div>
+                                    <CustomSlider
+                                        value={envConfig.nObstacles}
+                                        onChange={(value) => setEnvConfig({...envConfig, nObstacles: value})}
+                                        min={0}
+                                        max={8}
+                                        step={1}
+                                        disabled={isTraining}
+                                    />
                                 </div>
-                                <CustomSlider
-                                    value={envConfig.nObstacles}
-                                    onChange={(value) => setEnvConfig({...envConfig, nObstacles: value})}
-                                    min={0}
-                                    max={8}
-                                    step={1}
-                                    disabled={isTraining}
-                                />
-                            </div>
 
-                            <div className={styles.switchContainer}>
-                                <CustomSwitch
-                                    checked={envConfig.dynamicObstacles}
-                                    onChange={(checked) => setEnvConfig({...envConfig, dynamicObstacles: checked})}
-                                    disabled={isTraining}
-                                />
-                                <span className={styles.switchLabel}>Dynamic Obstacles</span>
-                            </div>
-
-                            {/* Нові налаштування винагород */}
-                            <div className="mt-6">
-                                <h3 className="text-sm font-semibold mb-4">Rewards Configuration</h3>
-
-                                <div className="space-y-4">
-                                    <div className={styles.sliderContainer}>
-                                        <div className={styles.sliderLabel}>
-                                            <span>Coin Collected Reward</span>
-                                            <span>{envConfig.rewards.coinCollected}</span>
-                                        </div>
-                                        <CustomSlider
-                                            value={envConfig.rewards.coinCollected}
-                                            onChange={(value) => setEnvConfig({
-                                                ...envConfig,
-                                                rewards: {...envConfig.rewards, coinCollected: value}
-                                            })}
-                                            min={0}
-                                            max={5}
-                                            step={0.1}
-                                            disabled={isTraining}
-                                        />
-                                    </div>
-
-                                    <div className={styles.sliderContainer}>
-                                        <div className={styles.sliderLabel}>
-                                            <span>Collision Penalty</span>
-                                            <span>{envConfig.rewards.collision}</span>
-                                        </div>
-                                        <CustomSlider
-                                            value={Math.abs(envConfig.rewards.collision)}
-                                            onChange={(value) => setEnvConfig({
-                                                ...envConfig,
-                                                rewards: {...envConfig.rewards, collision: -value}
-                                            })}
-                                            min={0}
-                                            max={5}
-                                            step={0.1}
-                                            disabled={isTraining}
-                                        />
-                                    </div>
-
-                                    <div className={styles.sliderContainer}>
-                                        <div className={styles.sliderLabel}>
-                                            <span>Step Penalty</span>
-                                            <span>{envConfig.rewards.step}</span>
-                                        </div>
-                                        <CustomSlider
-                                            value={Math.abs(envConfig.rewards.step)}
-                                            onChange={(value) => setEnvConfig({
-                                                ...envConfig,
-                                                rewards: {...envConfig.rewards, step: -value}
-                                            })}
-                                            min={0}
-                                            max={0.1}
-                                            step={0.001}
-                                            disabled={isTraining}
-                                        />
-                                    </div>
-
-                                    <div className={styles.sliderContainer}>
-                                        <div className={styles.sliderLabel}>
-                                            <span>Completion Reward</span>
-                                            <span>{envConfig.rewards.completion}</span>
-                                        </div>
-                                        <CustomSlider
-                                            value={envConfig.rewards.completion}
-                                            onChange={(value) => setEnvConfig({
-                                                ...envConfig,
-                                                rewards: {...envConfig.rewards, completion: value}
-                                            })}
-                                            min={0}
-                                            max={10}
-                                            step={0.1}
-                                            disabled={isTraining}
-                                        />
-                                    </div>
-
-                                    <div className={styles.sliderContainer}>
-                                        <div className={styles.sliderLabel}>
-                                            <span>Timeout Penalty</span>
-                                            <span>{envConfig.rewards.timeout}</span>
-                                        </div>
-                                        <CustomSlider
-                                            value={Math.abs(envConfig.rewards.timeout)}
-                                            onChange={(value) => setEnvConfig({
-                                                ...envConfig,
-                                                rewards: {...envConfig.rewards, timeout: -value}
-                                            })}
-                                            min={0}
-                                            max={5}
-                                            step={0.1}
-                                            disabled={isTraining}
-                                        />
+                                <div className={styles.settingItem}>
+                                    <div className={styles.switchContainer}>
+                                        <label className={styles.switchLabel}>
+                                            <span className={styles.switchText}>Dynamic Obstacles</span>
+                                            <div className={styles.switchControl}>
+                                                <input
+                                                    type="checkbox"
+                                                    checked={envConfig.dynamicObstacles}
+                                                    onChange={(e) => setEnvConfig({
+                                                        ...envConfig,
+                                                        dynamicObstacles: e.target.checked
+                                                    })}
+                                                    disabled={isTraining}
+                                                    className={styles.switchInput}
+                                                />
+                                                <div className={styles.switchTrack}/>
+                                            </div>
+                                        </label>
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                    </CardContent>
-                </Card>
+                        </CardContent>
+                    </Card>
 
+                    {/* Rewards Configuration as separate card */}
+                    <Card>
+                        <CardHeader>
+                            <CardTitle>Rewards Configuration</CardTitle>
+                        </CardHeader>
+                        <CardContent>
+                            <div className={styles.settingsGrid}>
+                                <div className={styles.settingItem}>
+                                    <div className={styles.settingLabel}>
+                                        <span className={styles.settingName}>Coin Collected Reward</span>
+                                        <span className={styles.settingValue}>{envConfig.rewards.coinCollected}</span>
+                                    </div>
+                                    <CustomSlider
+                                        value={envConfig.rewards.coinCollected}
+                                        onChange={(value) => setEnvConfig({
+                                            ...envConfig,
+                                            rewards: {...envConfig.rewards, coinCollected: value}
+                                        })}
+                                        min={0}
+                                        max={5}
+                                        step={0.1}
+                                        disabled={isTraining}
+                                    />
+                                </div>
+
+                                <div className={styles.settingItem}>
+                                    <div className={styles.settingLabel}>
+                                        <span className={styles.settingName}>Collision Penalty</span>
+                                        <span className={styles.settingValue}>{Math.abs(envConfig.rewards.collision)}</span>
+                                    </div>
+                                    <CustomSlider
+                                        value={Math.abs(envConfig.rewards.collision)}
+                                        onChange={(value) => setEnvConfig({
+                                            ...envConfig,
+                                            rewards: {...envConfig.rewards, collision: -value}
+                                        })}
+                                        min={0}
+                                        max={5}
+                                        step={0.1}
+                                        disabled={isTraining}
+                                    />
+                                </div>
+
+                                <div className={styles.settingItem}>
+                                    <div className={styles.settingLabel}>
+                                        <span className={styles.settingName}>Step Penalty</span>
+                                        <span className={styles.settingValue}>{envConfig.rewards.step}</span>
+                                    </div>
+                                    <CustomSlider
+                                        value={Math.abs(envConfig.rewards.step)}
+                                        onChange={(value) => setEnvConfig({
+                                            ...envConfig,
+                                            rewards: {...envConfig.rewards, step: -value}
+                                        })}
+                                        min={0}
+                                        max={0.1}
+                                        step={0.001}
+                                        disabled={isTraining}
+                                    />
+                                </div>
+
+                                <div className={styles.settingItem}>
+                                    <div className={styles.settingLabel}>
+                                        <span className={styles.settingName}>Completion Reward</span>
+                                        <span className={styles.settingValue}>{envConfig.rewards.completion}</span>
+                                    </div>
+                                    <CustomSlider
+                                        value={envConfig.rewards.completion}
+                                        onChange={(value) => setEnvConfig({
+                                            ...envConfig,
+                                            rewards: {...envConfig.rewards, completion: value}
+                                        })}
+                                        min={0}
+                                        max={10}
+                                        step={0.1}
+                                        disabled={isTraining}
+                                    />
+                                </div>
+
+                                <div className={styles.settingItem}>
+                                    <div className={styles.settingLabel}>
+                                        <span className={styles.settingName}>Timeout Penalty</span>
+                                        <span className={styles.settingValue}>{Math.abs(envConfig.rewards.timeout)}</span>
+                                    </div>
+                                    <CustomSlider
+                                        value={Math.abs(envConfig.rewards.timeout)}
+                                        onChange={(value) => setEnvConfig({
+                                            ...envConfig,
+                                            rewards: {...envConfig.rewards, timeout: -value}
+                                        })}
+                                        min={0}
+                                        max={5}
+                                        step={0.1}
+                                        disabled={isTraining}
+                                    />
+                                </div>
+                            </div>
+                        </CardContent>
+                    </Card>
+                </div>
+
+                <div className={styles.cardContainer}>
                 {/* Agent Settings */}
                 <Card>
                     <CardHeader>
                         <CardTitle>Agent Settings</CardTitle>
                     </CardHeader>
                     <CardContent>
-                        <div className="space-y-4">
-                            {/* Learning Rate */}
-                            <div className={styles.sliderContainer}>
-                                <div className={styles.sliderLabel}>
-                                    <span>Learning Rate</span>
-                                    <span className="font-medium">{agentConfig.learningRate.toFixed(4)}</span>
+                        <div className={styles.settingsGrid}>
+                            <div className={styles.settingItem}>
+                                <div className={styles.settingLabel}>
+                                    <span className={styles.settingName}>Learning Rate</span>
+                                    <span className={styles.settingValue}>{agentConfig.learningRate.toFixed(4)}</span>
                                 </div>
                                 <CustomSlider
                                     value={agentConfig.learningRate * 1000}
@@ -357,11 +371,10 @@ const RLConfigInterface = () => {
                                 />
                             </div>
 
-                            {/* Batch Size */}
-                            <div className={styles.sliderContainer}>
-                                <div className={styles.sliderLabel}>
-                                    <span>Batch Size</span>
-                                    <span>{agentConfig.batchSize}</span>
+                            <div className={styles.settingItem}>
+                                <div className={styles.settingLabel}>
+                                    <span className={styles.settingName}>Batch Size</span>
+                                    <span className={styles.settingValue}>{agentConfig.batchSize}</span>
                                 </div>
                                 <CustomSlider
                                     value={agentConfig.batchSize}
@@ -373,11 +386,10 @@ const RLConfigInterface = () => {
                                 />
                             </div>
 
-                            {/* Gamma */}
-                            <div className={styles.sliderContainer}>
-                                <div className={styles.sliderLabel}>
-                                    <span>Gamma (Discount)</span>
-                                    <span>{agentConfig.gamma}</span>
+                            <div className={styles.settingItem}>
+                                <div className={styles.settingLabel}>
+                                    <span className={styles.settingName}>Gamma (Discount)</span>
+                                    <span className={styles.settingValue}>{agentConfig.gamma}</span>
                                 </div>
                                 <CustomSlider
                                     value={agentConfig.gamma * 100}
@@ -389,11 +401,25 @@ const RLConfigInterface = () => {
                                 />
                             </div>
 
-                            {/* Epsilon Decay */}
-                            <div className={styles.sliderContainer}>
-                                <div className={styles.sliderLabel}>
-                                    <span>Epsilon Decay</span>
-                                    <span>{agentConfig.epsilonDecay}</span>
+                            <div className={styles.settingItem}>
+                                <div className={styles.settingLabel}>
+                                    <span className={styles.settingName}>Initial Epsilon</span>
+                                    <span className={styles.settingValue}>{agentConfig.epsilon.toFixed(2)}</span>
+                                </div>
+                                <CustomSlider
+                                    value={agentConfig.epsilon * 100}
+                                    onChange={(value) => setAgentConfig({...agentConfig, epsilon: value / 100})}
+                                    min={0}
+                                    max={100}
+                                    step={5}
+                                    disabled={isTraining}
+                                />
+                            </div>
+
+                            <div className={styles.settingItem}>
+                                <div className={styles.settingLabel}>
+                                    <span className={styles.settingName}>Epsilon Decay</span>
+                                    <span className={styles.settingValue}>{agentConfig.epsilonDecay}</span>
                                 </div>
                                 <CustomSlider
                                     value={agentConfig.epsilonDecay * 100}
@@ -404,53 +430,86 @@ const RLConfigInterface = () => {
                                     disabled={isTraining}
                                 />
                             </div>
+
+                            <div className={styles.settingItem}>
+                                <div className={styles.settingLabel}>
+                                    <span className={styles.settingName}>Minimum Epsilon</span>
+                                    <span className={styles.settingValue}>{agentConfig.epsilonMin}</span>
+                                </div>
+                                <CustomSlider
+                                    value={agentConfig.epsilonMin * 100}
+                                    onChange={(value) => setAgentConfig({...agentConfig, epsilonMin: value / 100})}
+                                    min={1}
+                                    max={30}
+                                    step={1}
+                                    disabled={isTraining}
+                                />
+                            </div>
+
+                            <div className={styles.settingItem}>
+                                <div className={styles.settingLabel}>
+                                    <span className={styles.settingName}>Memory Size</span>
+                                    <span className={styles.settingValue}>{agentConfig.memorySize}</span>
+                                </div>
+                                <CustomSlider
+                                    value={agentConfig.memorySize}
+                                    onChange={(value) => setAgentConfig({...agentConfig, memorySize: value})}
+                                    min={1000}
+                                    max={50000}
+                                    step={1000}
+                                    disabled={isTraining}
+                                />
+                            </div>
+                        </div>
+                    </CardContent>
+                </Card>
+                </div>
+
+                {/* Training Settings */}
+                <div className={styles.cardContainer}>
+                <Card className="mb-6">
+                    <CardHeader>
+                        <CardTitle>Training Settings</CardTitle>
+                    </CardHeader>
+                    <CardContent>
+                        <div className={styles.settingsGrid}>
+                            <div className={styles.settingItem}>
+                                <div className={styles.settingLabel}>
+                                    <span className={styles.settingName}>Episodes</span>
+                                    <span className={styles.settingValue}>{trainingConfig.episodes}</span>
+                                </div>
+                                <CustomSlider
+                                    value={trainingConfig.episodes}
+                                    onChange={(value) => setTrainingConfig({...trainingConfig, episodes: value})}
+                                    min={100}
+                                    max={2000}
+                                    step={100}
+                                    disabled={isTraining}
+                                />
+                            </div>
+
+                            <div className={styles.settingItem}>
+                                <div className={styles.settingLabel}>
+                                    <span className={styles.settingName}>Render Every</span>
+                                    <span className={styles.settingValue}>{trainingConfig.renderEvery}</span>
+                                </div>
+                                <CustomSlider
+                                    value={trainingConfig.renderEvery}
+                                    onChange={(value) => setTrainingConfig({...trainingConfig, renderEvery: value})}
+                                    min={1}
+                                    max={100}
+                                    step={1}
+                                    disabled={isTraining}
+                                />
+                                <div className={styles.settingHint}>
+                                    Lower values will show more frequent updates but may slow down training
+                                </div>
+                            </div>
                         </div>
                     </CardContent>
                 </Card>
             </div>
-
-            {/* Training Settings */}
-            <Card className="mb-6">
-                <CardHeader>
-                    <CardTitle>Training Settings</CardTitle>
-                </CardHeader>
-                <CardContent>
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                        <div className={styles.sliderContainer}>
-                            <div className={styles.sliderLabel}>
-                                <span>Episodes</span>
-                                <span>{trainingConfig.episodes}</span>
-                            </div>
-                            <CustomSlider
-                                value={trainingConfig.episodes}
-                                onChange={(value) => setTrainingConfig({...trainingConfig, episodes: value})}
-                                min={100}
-                                max={2000}
-                                step={100}
-                                disabled={isTraining}
-                            />
-                        </div>
-
-                        <div className={styles.sliderContainer}>
-                            <div className={styles.sliderLabel}>
-                                <span>Render Every</span>
-                                <span>{trainingConfig.renderEvery}</span>
-                            </div>
-                            <CustomSlider
-                                value={trainingConfig.renderEvery}
-                                onChange={(value) => setTrainingConfig({...trainingConfig, renderEvery: value})}
-                                min={1}
-                                max={100}
-                                step={1}
-                                disabled={isTraining}
-                            />
-                            <span className="text-sm text-gray-500 mt-1 block">
-                                Lower values will show more frequent updates but may slow down training
-                            </span>
-                        </div>
-                    </div>
-                </CardContent>
-            </Card>
+            </div>
 
             <div className={styles.grid2Cols}>
                 {/* Training Progress */}
@@ -459,14 +518,46 @@ const RLConfigInterface = () => {
                         <CardTitle>Training Progress</CardTitle>
                     </CardHeader>
                     <CardContent>
+
+                        {/* Stats Display */}
+                        <div className={styles.statsGrid}>
+                            <div className={styles.statItem}>
+                                <div className={styles.statLabel}>Average Reward</div>
+                                <div className={`${styles.statValue} ${styles.reward}`}>
+                                    {trainingData[trainingData.length - 1]?.stats?.averageReward?.toFixed(3) || "0.000"}
+                                </div>
+                            </div>
+
+                            <div className={styles.statItem}>
+                                <div className={styles.statLabel}>Training Time</div>
+                                <div className={`${styles.statValue} ${styles.time}`}>
+                                    {trainingData[trainingData.length - 1]?.stats?.trainingTime || "00:00:00"}
+                                </div>
+                            </div>
+
+                            <div className={styles.statItem}>
+                                <div className={styles.statLabel}>Best Reward</div>
+                                <div className={`${styles.statValue} ${styles.best}`}>
+                                    {trainingData[trainingData.length - 1]?.stats?.bestReward?.toFixed(3) || "0.000"}
+                                </div>
+                            </div>
+
+                            <div className={styles.statItem}>
+                                <div className={styles.statLabel}>Steps/Second</div>
+                                <div className={`${styles.statValue} ${styles.steps}`}>
+                                    {trainingData[trainingData.length - 1]?.stats?.stepsPerSecond?.toFixed(1) || "0.0"}
+                                </div>
+                            </div>
+                        </div>
+
                         <div className={styles.chartContainer}>
-                            <LineChart width={800} height={400} data={trainingData}>
-                                <CartesianGrid strokeDasharray="3 3" />
-                                <XAxis dataKey="episode" />
-                                <YAxis yAxisId="left" />
-                                <YAxis yAxisId="right" orientation="right" />
-                                <Tooltip />
-                                <Legend />
+                            <LineChart width={window.innerWidth < 768 ? 300 : 800} height={400} data={trainingData} className={styles.chart}>
+                                <CartesianGrid strokeDasharray="3 3"/>
+                                <XAxis dataKey="episode"/>
+                                <YAxis yAxisId="left"/>
+                                <YAxis yAxisId="right" orientation="right"/>
+                                <Tooltip/>
+                                <Legend/>
                                 <Line
                                     yAxisId="left"
                                     type="monotone"
@@ -502,13 +593,26 @@ const RLConfigInterface = () => {
 
             {/* Training Controls */}
             <div className="flex flex-col items-center gap-6">
-                <Button
-                    className={`${styles.button} ${isTraining ? styles.stop : ''}`}
+                <button
+                    className={`${styles.trainingButton} ${
+                        isTraining ? styles.stopTraining : styles.startTraining
+                    }`}
                     onClick={isTraining ? stopTraining : handleStartTraining}
                     disabled={status === 'error'}
+
                 >
-                    {isTraining ? 'Stop Training' : 'Start Training'}
-                </Button>
+                    {isTraining ? (
+                        <>
+                            <span className={styles.buttonIcon}></span>
+                            Stop Training
+                        </>
+                    ) : (
+                        <>
+                            <span className={styles.buttonIcon}></span>
+                            Start Training
+                        </>
+                    )}
+                </button>
 
                 <Alert className={styles.statusBar}>
                     <AlertDescription>
